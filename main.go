@@ -14,9 +14,9 @@ import (
 	"golang.org/x/oauth2"
 )
 
-const (
-	repo   = "moby/moby"
-	tocken = "1660941cfa92bb5e73bbdef4c4ef2b1fd8841be6"
+var (
+	repo   = "fanux/lhttp"
+	tocken = "55bab2e0ce5924a4242508bb474ced225a46e1c1"
 )
 
 //User is
@@ -25,6 +25,13 @@ type User struct {
 }
 
 func main() {
+	if len(os.Args) > 2 {
+		repo = os.Args[1]
+		tocken = os.Args[2]
+	} else if len(os.Args) > 1 {
+		repo = os.Args[1]
+	}
+
 	users := make(chan string, 50000)
 	//userinfo := make(chan github.User, 1024)
 
@@ -35,10 +42,12 @@ func main() {
 	go getUserinfo(ctx, users)
 	for i := 1; ; i++ {
 		us := new([]User)
-		url := fmt.Sprintf("https://api.github.com/repos/%s/stargazers?page=%d&per_page=100&?access_token=%s", repo, i, tocken)
+		url := fmt.Sprintf("https://api.github.com/repos/%s/stargazers?page=%d&per_page=300&access_token=%s", repo, i, tocken)
 		resp, err := http.Get(url)
 		if err != nil {
 			fmt.Println("error", err)
+			i--
+			continue
 		}
 
 		defer resp.Body.Close()
@@ -96,10 +105,14 @@ func getUserinfo(gctx context.Context, users chan string) {
 				time.Sleep(time.Second * 60)
 				continue
 			}
+			if userinfo == nil || err != nil {
+				fmt.Println("userinfo is nil: ", err)
+				continue
+			}
 
 			dump := fmt.Sprintf("%s|%s|%s|%s|%s\n", tostring(userinfo.Login), tostring(userinfo.Name), tostring(userinfo.Company), tostring(userinfo.Location), tostring(userinfo.Email))
 			fmt.Println("got info:", dump)
-			if tostring(userinfo.Email) != "null" {
+			if tostring(userinfo.Email) != "" {
 				err = writeFile(fmt.Sprintf("%s-gitdata.dump", strings.Replace(repo, "/", "-", -1)), []byte(dump), 0644)
 			}
 
