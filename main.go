@@ -16,7 +16,7 @@ import (
 
 var (
 	repo   = "fanux/lhttp"
-	tocken = "64f55e05e3971f350b1b8c146bbac145c45fd85d"
+	tocken = "f7aadf297a236ec4a486f479a022715cd0c2dfd7"
 )
 
 //User is
