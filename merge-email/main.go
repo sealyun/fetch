@@ -7,6 +7,7 @@ import (
 	"net/smtp"
 	"os"
 	"strings"
+	"time"
 )
 
 //Email  is
@@ -115,6 +116,7 @@ func send(name, email string) {
 	if err != nil {
 		fmt.Printf("Failed|%s|%s", name, email)
 		fmt.Println(err)
+		time.Sleep(10 * time.Minute)
 	} else {
 		fmt.Printf("Success|%s|%s", name, email)
 	}
