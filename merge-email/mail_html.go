@@ -15,7 +15,7 @@ const (
 	FROM_USER = "sealyun"
 )
 
-func SendHtmlMail(key, html, to, subject string) {
+func SendHtmlMail(key, to, subject, html string) {
 	RequestURI := "http://api.sendcloud.net/apiv2/mail/send"
 	PostParams := url.Values{
 		"apiUser":        {API_USER},

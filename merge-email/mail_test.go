@@ -40,5 +40,5 @@ func TestSendTemplateMail(t *testing.T) {
 		</body>
 		</html>
 		`, "cuisongliu")
-	SendHtmlMail("user_key", body, "cuisongliu@qq.com", "Install kubernetes HA in one step!")
+	SendHtmlMail("user_key", "cuisongliu@qq.com", "Install kubernetes HA in one step!", body)
 }
