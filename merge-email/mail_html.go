@@ -35,12 +35,15 @@ func SendHtmlMail(key, to, subject, html string) {
 	if err != nil {
 		fmt.Println(err)
 		fmt.Printf("dump send err : %s", to)
+		return
 	}
 	defer ResponseHandler.Body.Close()
 	BodyByte, err := ioutil.ReadAll(ResponseHandler.Body)
 	if err != nil {
 		fmt.Println(err)
+		fmt.Println(string(BodyByte))
 		fmt.Printf("dump send err : %s", to)
+		return
 	}
-	//fmt.Println(string(BodyByte))
+	fmt.Printf("dump send success: %s", to)
 }
