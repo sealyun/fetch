@@ -34,7 +34,7 @@ func SendHtmlMail(key, to, subject, html string) {
 	ResponseHandler, err := http.Post(RequestURI, "application/x-www-form-urlencoded", PostBody)
 	if err != nil {
 		fmt.Println(err)
-		fmt.Printf("dump send err : %s", to)
+		fmt.Printf("dump send err : %s\n", to)
 		return
 	}
 	defer ResponseHandler.Body.Close()
@@ -42,8 +42,8 @@ func SendHtmlMail(key, to, subject, html string) {
 	if err != nil {
 		fmt.Println(err)
 		fmt.Println(string(BodyByte))
-		fmt.Printf("dump send err : %s", to)
+		fmt.Printf("dump send err : %s\n", to)
 		return
 	}
-	fmt.Printf("dump send success: %s", to)
+	fmt.Printf("dump send success: %s\n", to)
 }

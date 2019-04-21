@@ -7,7 +7,6 @@ import (
 	"net/smtp"
 	"os"
 	"strings"
-	"time"
 )
 
 //Email  is
@@ -29,7 +28,7 @@ func main() {
 		KEY = os.Getenv("KEY")
 	}
 
-	fmt.Printf("api user: %s from: %s from user: %s key: %s", API_USER, FROM, FROM_USER, KEY)
+	fmt.Printf("api user: %s from: %s from user: %s key: %s\n", API_USER, FROM, FROM_USER, KEY)
 
 	for _, file := range os.Args[1:] {
 		fi, err := os.Open(file)
@@ -51,7 +50,7 @@ func main() {
 			email := sp[4]
 			if email != "null" {
 				Email[email] = sp
-				fmt.Printf("dump merge : %s", string(a))
+				fmt.Printf("dump merge : %s\n", string(a))
 			}
 		}
 	}
@@ -174,10 +173,9 @@ func send(name, email string) {
 	fmt.Println("send email")
 	err := SendToMail(user, password, host, to, subject, body, "html")
 	if err != nil {
-		fmt.Printf("Failed|%s|%s", name, email)
+		fmt.Printf("Failed|%s|%s\n", name, email)
 		fmt.Println(err)
-		time.Sleep(10 * time.Minute)
 	} else {
-		fmt.Printf("Success|%s|%s", name, email)
+		fmt.Printf("Success|%s|%s\n", name, email)
 	}
 }
