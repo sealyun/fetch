@@ -9,10 +9,12 @@ import (
 	//"strings"
 )
 
-const (
+//envs
+var (
 	API_USER  = "sealyun"
 	FROM      = "support@mail.sealyun.com"
 	FROM_USER = "sealyun"
+	KEY       = ""
 )
 
 func SendHtmlMail(key, to, subject, html string) {
@@ -32,12 +34,13 @@ func SendHtmlMail(key, to, subject, html string) {
 	ResponseHandler, err := http.Post(RequestURI, "application/x-www-form-urlencoded", PostBody)
 	if err != nil {
 		fmt.Println(err)
-		panic(err)
+		fmt.Printf("dump send err : %s", to)
 	}
 	defer ResponseHandler.Body.Close()
 	BodyByte, err := ioutil.ReadAll(ResponseHandler.Body)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		fmt.Printf("dump send err : %s", to)
 	}
-	fmt.Println(string(BodyByte))
+	//fmt.Println(string(BodyByte))
 }

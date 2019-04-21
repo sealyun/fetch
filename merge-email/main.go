@@ -16,6 +16,21 @@ var Email map[string][]string
 func main() {
 	Email = make(map[string][]string)
 
+	if os.Getenv("API_USER") != "" {
+		API_USER = os.Getenv("API_USER")
+	}
+	if os.Getenv("FROM") != "" {
+		FROM = os.Getenv("FROM")
+	}
+	if os.Getenv("FROM_USER") != "" {
+		FROM_USER = os.Getenv("FROM_USER")
+	}
+	if os.Getenv("KEY") != "" {
+		KEY = os.Getenv("KEY")
+	}
+
+	fmt.Printf("api user: %s from: %s from user: %s key: %s", API_USER, FROM, FROM_USER, KEY)
+
 	for _, file := range os.Args[1:] {
 		fi, err := os.Open(file)
 		if err != nil {
@@ -36,12 +51,14 @@ func main() {
 			email := sp[4]
 			if email != "null" {
 				Email[email] = sp
+				fmt.Printf("dump merge : %s", string(a))
 			}
 		}
 	}
 
 	for k, v := range Email {
-		send(v[0], k)
+		//send(v[0], k)
+		sendCloud(v[0], k)
 	}
 }
 
@@ -67,9 +84,52 @@ func SendToMail(user, password, host, to, subject, body, mailtype string) error 
 	return err
 }
 
+//using sendCloud to send email
+func sendCloud(name, email string) {
+	body := fmt.Sprintf(`
+		<html>
+		<body>
+		<h3>
+		Dear %s:
+		</h3>
+		<p>
+		    Hi, It's my pleasure to introduce you a kubernetes HA install tool <a href="https://github.com/fanux/sealos"> sealos </a>, 
+
+        <br />
+        <br />
+		Quick Start:
+        <br />
+        <br />
+		<code>
+		sealos init \<br />
+			--master 192.168.0.2 \<br />
+			--master 192.168.0.3 \<br />
+			--master 192.168.0.4 \          # master addresses list <br />
+			--node 192.168.0.5 \            # nodes list <br />
+			--user root \                   # host username <br />
+			--passwd your-server-password \ # host password <br />
+			--pkg kube1.14.1.tar.gz  \      # offline package name, if you star sealos on github, you can download it free in http://store.lameleg.com <br />
+			--version v1.14.1               # kubernetes version <br />
+			</code>
+        <br />
+		That all!
+        <br />
+
+			Best wishes!
+		</p>
+		</body>
+		</html>
+		`, name)
+
+	SendHtmlMail(KEY, email, "Install kubernetes HA in one step!", body)
+}
+
 func send(name, email string) {
-	user := "474785153@qq.com"
-	password := "opprovzrnltjbjid" // 需要在邮箱设置里配置
+	//user := "474785153@qq.com"
+	//password := "opprovzrnltjbjid" // 需要在邮箱设置里配置
+	user := "sealyun@cuisongliu.com"
+	password := "wajwdkxxnqrfbjfh"
+
 	host := "smtp.qq.com:25"
 	to := email
 
