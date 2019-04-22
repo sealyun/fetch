@@ -2,12 +2,21 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	//"strings"
 )
+
+//Res is
+type Res struct {
+	Result     string      `json:"result"`
+	StatusCode int         `json:"statusCode"`
+	Message    string      `json:"message"`
+	Info       interface{} `json:"info"`
+}
 
 //envs
 var (
@@ -44,6 +53,18 @@ func SendHtmlMail(key, to, subject, html string) {
 		fmt.Println(string(BodyByte))
 		fmt.Printf("dump send err : %s\n", to)
 		return
+	}
+
+	res := &Res{}
+	err = json.Unmarshal(BodyByte, res)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Printf("dump send err : %s\n", to)
+		return
+	}
+	if res.StatusCode != 200 {
+		fmt.Println(string(BodyByte))
+		fmt.Printf("dump send err : %s\n", to)
 	}
 	fmt.Printf("dump send success: %s\n", to)
 }
