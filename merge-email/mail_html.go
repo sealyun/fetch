@@ -68,7 +68,7 @@ func SendHtmlMail(key, to, subject, html string) {
 	if res.StatusCode != 200 {
 		fmt.Println(string(BodyByte))
 		fmt.Printf("dump send err : %s\n", to)
-		panic(1)
+		time.Sleep(time.Second * 10)
 	}
 	fmt.Printf("dump send success: %s\n", to)
 	count++
