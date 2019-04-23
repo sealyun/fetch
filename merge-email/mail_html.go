@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"time"
 	//"strings"
 )
@@ -71,10 +73,26 @@ func SendHtmlMail(key, to, subject, html string) {
 		time.Sleep(time.Second * 10)
 	}
 	fmt.Printf("dump send success: %s\n", to)
+	writeFile("sended.dump", []byte(to), 0644)
 	count++
 	if count > 1300 {
 		count = 0
 		fmt.Println("Start sleep 24 hours...")
 		time.Sleep(time.Hour * 24)
 	}
+}
+
+func writeFile(filename string, data []byte, perm os.FileMode) error {
+	f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, perm)
+	if err != nil {
+		return err
+	}
+	n, err := f.Write(data)
+	if err == nil && n < len(data) {
+		err = io.ErrShortWrite
+	}
+	if err1 := f.Close(); err == nil {
+		err = err1
+	}
+	return err
 }
