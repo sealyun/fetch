@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
 	//"strings"
 )
 
@@ -25,6 +26,8 @@ var (
 	FROM_USER = "sealyun"
 	KEY       = ""
 )
+
+var count = 0
 
 func SendHtmlMail(key, to, subject, html string) {
 	RequestURI := "http://api.sendcloud.net/apiv2/mail/send"
@@ -65,6 +68,13 @@ func SendHtmlMail(key, to, subject, html string) {
 	if res.StatusCode != 200 {
 		fmt.Println(string(BodyByte))
 		fmt.Printf("dump send err : %s\n", to)
+		panic(1)
 	}
 	fmt.Printf("dump send success: %s\n", to)
+	count++
+	if count > 1300 {
+		count = 0
+		fmt.Println("Start sleep 24 hours...")
+		time.Sleep(time.Hour * 24)
+	}
 }
