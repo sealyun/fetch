@@ -12,8 +12,33 @@ import (
 //Email  is
 var Email map[string][]string
 
+var sended map[string]int
+
+func loadSended() {
+	fi, err := os.Open("sended.dump")
+	if err != nil {
+		fmt.Println("open file error ", err)
+	}
+	br := bufio.NewReader(fi)
+	for {
+		a, _, c := br.ReadLine()
+		if c == io.EOF {
+			break
+		}
+
+		sended[string(a)] = 1
+	}
+
+}
+
+func alreadySend(email string) bool {
+	_, ok := sended[email]
+	return ok
+}
+
 func main() {
 	Email = make(map[string][]string)
+	sended = make(map[string]int)
 
 	if os.Getenv("API_USER") != "" {
 		API_USER = os.Getenv("API_USER")
@@ -56,6 +81,10 @@ func main() {
 	}
 
 	for k, v := range Email {
+		if alreadySend(k) {
+			fmt.Println("dump already send: ", k)
+			continue
+		}
 		//send(v[0], k)
 		sendCloud(v[0], k)
 	}
