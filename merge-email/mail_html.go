@@ -13,7 +13,7 @@ import (
 
 //Res is
 type Res struct {
-	Result     string      `json:"result"`
+	Result     bool        `json:"result"`
 	StatusCode int         `json:"statusCode"`
 	Message    string      `json:"message"`
 	Info       interface{} `json:"info"`
