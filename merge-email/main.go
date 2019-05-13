@@ -28,7 +28,6 @@ func loadSended() {
 
 		sended[string(a)] = 1
 	}
-
 }
 
 func alreadySend(email string) bool {
@@ -39,6 +38,7 @@ func alreadySend(email string) bool {
 func main() {
 	Email = make(map[string][]string)
 	sended = make(map[string]int)
+	loadSended()
 
 	if os.Getenv("API_USER") != "" {
 		API_USER = os.Getenv("API_USER")
