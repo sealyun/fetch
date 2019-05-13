@@ -92,7 +92,7 @@ func main() {
 
 func contains(a string) bool {
 	b := strings.ToLower(a)
-	return strings.Contains(b, "iflytek") || strings.Contains(b, "hefei") || strings.Contains(b, "anhui")
+	return strings.Contains(b, "iflytek")  || strings.Contains(b, "spam")|| strings.Contains(b, "hefei") || strings.Contains(b, "anhui")
 }
 
 //SendToMail is
@@ -114,6 +114,7 @@ func SendToMail(user, password, host, to, subject, body, mailtype string) error 
 
 //using sendCloud to send email
 func sendCloud(name, email string) {
+/*
 	body := fmt.Sprintf(`
 		<html>
 		<body>
@@ -148,8 +149,33 @@ func sendCloud(name, email string) {
 		</body>
 		</html>
 		`, name)
+*/
+	body := fmt.Sprintf(`
+    		<html>
+		<body>
+		<h3>
+		Dear %s,
+		</h3>
+		<p>
+&nbsp;&nbsp;&nbsp;&nbsp;      I am steven, a coder from China, I am honoured to introduce a kubernetes HA installer for you. 
+https://github.com/fanux/sealos , 
+ <br /> &nbsp;&nbsp;&nbsp;&nbsp; you can build a high avalible kubernetes cluster in few minute using sealos. 
+We using ipvs local proxy for masters LB, it is very simple and robust. 
+<br />
+     &nbsp;&nbsp;&nbsp;&nbsp;   Hope you like it, sorry about to disturb you :)
 
-	SendHtmlMail(KEY, email, "Install kubernetes HA in one step!", body)
+<br />
+Regards,
+<br />
+Steven.
+
+        <br />
+		</p>
+		</body>
+		</html>
+	`,name)
+
+	SendHtmlMail(KEY, email, "A kubernetes HA installer", body)
 }
 
 func send(name, email string) {

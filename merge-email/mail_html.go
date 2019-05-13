@@ -73,9 +73,9 @@ func SendHtmlMail(key, to, subject, html string) {
 		time.Sleep(time.Second * 10)
 	}
 	fmt.Printf("dump send success: %s\n", to)
-	writeFile("sended.dump", []byte(to), 0644)
+	writeFile("sended.dump", []byte(to+"\n"), 0644)
 	count++
-	if count > 1000 {
+	if count > 10000 {
 		count = 0
 		fmt.Println("Start sleep 24 hours...")
 		time.Sleep(time.Hour * 24)
